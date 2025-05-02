@@ -93,7 +93,7 @@ WHERE
 **Q9. Average sale per month:**
 
 ```sql
-SELECT
+SELECT 
   TO_CHAR(TO_DATE(sale_date, 'DD-MM-YYYY'), 'Month') AS sale_month,
   ROUND(AVG(total_sale), 2) AS avg_monthly_sale
 FROM retail_sales
@@ -106,7 +106,7 @@ ORDER BY EXTRACT(MONTH FROM TO_DATE(sale_date, 'DD-MM-YYYY'));
 
 ```sql
 WITH monthly_sales AS (
-  SELECT
+  SELECT 
     EXTRACT(YEAR FROM TO_DATE(sale_date, 'DD-MM-YYYY')) AS year,
     TO_CHAR(TO_DATE(sale_date, 'DD-MM-YYYY'), 'Month') AS month_name,
     EXTRACT(MONTH FROM TO_DATE(sale_date, 'DD-MM-YYYY')) AS month_num,
@@ -123,9 +123,9 @@ ORDER BY year, total_sales DESC;
 **Q11. Add time of day (shift) label:**
 
 ```sql
-SELECT
+SELECT 
   "sale_time",
-  CASE
+  CASE 
     WHEN EXTRACT(HOUR FROM "sale_time"::TIME) < 12 THEN 'Morning'
     WHEN EXTRACT(HOUR FROM "sale_time"::TIME) BETWEEN 12 AND 17 THEN 'Afternoon'
     ELSE 'Evening'
@@ -137,9 +137,9 @@ FROM retail_sales;
 
 ```sql
 SELECT time_of_day, COUNT(*) AS number_of_orders FROM (
-  SELECT
+  SELECT 
     sale_time,
-    CASE
+    CASE 
       WHEN EXTRACT(HOUR FROM "sale_time"::TIME) < 12 THEN 'Morning'
       WHEN EXTRACT(HOUR FROM "sale_time"::TIME) BETWEEN 12 AND 17 THEN 'Afternoon'
       ELSE 'Evening'
@@ -149,3 +149,27 @@ SELECT time_of_day, COUNT(*) AS number_of_orders FROM (
 GROUP BY time_of_day
 ORDER BY number_of_orders DESC;
 ```
+
+
+---
+
+### 📌 Key Findings
+
+* The majority of orders occurred in the **Afternoon**, followed by **Evening**.
+* **Clothing** category had high-value bulk orders, especially in **November 2022**.
+* The **best-selling months** vary by year, suggesting seasonality in customer behavior.
+* There are noticeable data quality issues (e.g., encoding errors, missing values) that were cleaned.
+
+---
+
+### 📊 Reports & Insights
+
+* **Monthly Sales Trend**: Identified average sales for each month, useful for forecasting.
+* **Shift-wise Sales Volume**: Helps allocate resources efficiently based on time-of-day performance.
+* **Category Performance**: Quick filter on high-performing categories like Clothing.
+
+---
+
+### ✅ Conclusion
+
+This SQL analysis provides a structured approach to clean, explore, and extract insights from retail sales data. By organizing transactions into shifts and summarizing monthly trends, the business can make better decisions around marketing campaigns, workforce planning, and inventory stocking based on actual sales patterns.
